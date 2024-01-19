@@ -2,7 +2,7 @@
 
 
 > # 项目说明视频网盘链接：https://pan.baidu.com/s/1-ZU_9rU_hFOAO4Bh81GraA 
-
+**注：说明视频中AQI可视化大屏展示的片段若有闪屏可看该md文档下的动图演示**
 > # 提取码：HTGS
 
 ***
