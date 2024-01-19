@@ -1,0 +1,248 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>全国省会城市AQI监测查询平台</title>
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+
+    <link rel="stylesheet" href="../static/css/comon0.css">
+</head>
+<style>
+    /* 样式选择所有的 <select> 元素 */
+select {
+   
+    background-color: #fafbfb;
+
+}
+
+    /* 样式选择所有的 <option> 元素 */
+    select option {
+        background-color: #fff;
+        color: #333;
+    }
+.loading-icon {
+  position: relative;
+  left: 40%;
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(6, 53, 128, 0.8);
+  border-top: 4px solid rgb(42,162,218);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+    $(window).load(function () {
+        $(".loading").fadeOut()
+    })
+
+
+    $(document).ready(function () {
+        var whei = $(window).width()
+        $("html").css({ fontSize: whei / 20 })
+        $(window).resize(function () {
+            var whei = $(window).width()
+            $("html").css({ fontSize: whei / 20 })
+        });
+    });
+</script>
+<script type="text/javascript" src="../static/js/data_load.js"></script>
+<script type="text/javascript" src="../static/js/echarts.min.js"></script>
+<script language="JavaScript" src="../static/js/js.js"></script>
+<script language="JavaScript" src="../static/js/day.js"></script>
+<script language="JavaScript" src="../static/js/radar.js"></script>
+
+
+<body>
+    
+    <div class="canvas" style="opacity: .2">
+        <iframe frameborder="0" src="../static/js/index.html" style="width: 100%; height: 100%"></iframe>
+    </div>
+    <div class="loading">
+        <div class="loadbox"> <img src="../static/images/loading.gif"> 页面加载中... </div>
+    </div>
+    <div class="head">
+        <h1>全国省会城市AQI监测查询平台</h1>
+        <div class="weather"><img src="../static/images/weather.png"><span id="showTime"></span></div>
+
+        <script>
+            var t = null;
+            t = setTimeout(time, 1000); 
+            function time() {
+                clearTimeout(t); 
+                dt = new Date();
+                var y = dt.getFullYear();
+                var mt = dt.getMonth() + 1;
+                var day = dt.getDate();
+                var h = dt.getHours(); 
+                var m = dt.getMinutes(); 
+                var s = dt.getSeconds(); 
+                document.getElementById("showTime").innerHTML = y + "年" + mt + "月" + day + "-" + h + "时" + m + "分" + s + "秒";
+                t = setTimeout(time, 1000);  
+            }
+
+        </script>
+
+
+    </div>
+    <div class="mainbox">
+        <ul class="clearfix">
+            <li>
+                <div class="boxall" style="height: 4rem">
+                    <div class="alltitle"></div>
+                    <div class="allnav" id="echart1"></div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 4rem">
+                    <div class="alltitle">省会城市年空气质量等级占比表</div>
+                    <select id="citySelector3" style="height: 20px">
+                        <option value="上海">选择城市</option>
+             
+                        <!-- 添加其他城市选项 -->
+                    </select>
+                    <div class="allnav" id="echart2"></div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 4rem">
+                    <div style="height:100%; width: 100%;">
+                        <div class="alltitle">年均空气质量等级省会城市分布图</div>
+
+                        <select id="yearSelector" >
+                            <option value="2023">选择年份</option>
+                 
+                            <!-- 添加其他城市选项 -->
+                        </select>
+
+
+                        
+                        <div class="sy" id="fb1" style="bottom:5%;width: 100%;">
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="boxfoot">
+
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="bar">
+                    <div class="barbox">
+                        <ul class="clearfix">
+                            <li class="pulll_left counter" id = "aqi-value"><div class="loading-icon" id = 'icon1'></div></li>
+                            <li class="pulll_left counter" id = "aqi-level"><div class="loading-icon" id = 'icon2'></div></li>
+                        </ul>
+                    </div>
+                    <div class="barbox2">
+                        <ul class="clearfix">
+                            <li class="pulll_left">全国省会城市平均AQI </li>
+                            <li class="pulll_left">平均空气质量等级</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="map">
+                    <div style="z-index: 9999;position: absolute;top:45%;left: 48%;" id ='loadmap'> <img src="../static/images/loading.gif"></div>
+
+                    <div class="map1"><img src="../static/images/lbx.png"></div>
+                    <div class="map2"><img src="../static/images/jt.png"></div>
+                    <div class="map3"><img src="../static/images/map.png"></div>
+                    <div class="map4" id="map_1">
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="boxall" style="height:4rem">
+                    <div class="alltitle">各省会城市近十年来年平均AQI变化图</div>
+                    <select id="citySelector">
+                        <option value="上海">城市一</option>
+                
+                        <!-- 添加其他城市选项 -->
+                    </select>
+
+                    <select id="citySelector2">
+                        <option value="北京">城市二</option>
+                      
+                        
+                        
+                        <!-- 添加其他城市选项 -->
+                    </select>
+                    
+                    <div class="allnav" id="echart4"></div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 4rem">
+                    <div class="alltitle">2014-2023上海市日AQI变化图表</div>
+                    
+                    <div class="allnav" id="echart5"></div>
+                    <div class="boxfoot"></div>
+                </div>
+                <div class="boxall" style="height: 4rem">
+                    <div class="alltitle">AQI污染物雷达图</div>
+                    <div class="allnav" id="echart6" style="width: 100%;height: 90%;top:10%"></div>
+                    <div class="boxfoot"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="back"></div>
+
+
+
+    <script type="text/javascript" src="../static/js/china.js"></script>
+    <script type="text/javascript" src="../static/js/area_echarts.js"></script>
+
+    <script>
+            // 省会城市列表
+        var cities = [
+        '北京', '天津', '上海', '重庆', '石家庄', '太原', '西安', '济南', '郑州', 
+        '沈阳', '长春', '哈尔滨', '南京', '杭州', '合肥', '南昌', '福州', '武汉', '长沙', 
+        '成都', '贵阳', '昆明', '广州', '海口', '兰州', '西宁', '呼和浩特', '乌鲁木齐', 
+        '拉萨', '南宁', '银川'
+        ];
+        var years = [
+            '2014','2015','2016','2017','2018','2019','2020','2021','2022','2023',
+        ];
+
+        var yearSelector = document.getElementById('yearSelector');
+        years.forEach(function(year){
+            var option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+
+            yearSelector.appendChild(option);
+          
+        })
+
+        // 获取下拉列表元素
+        var citySelector = document.getElementById('citySelector');
+        var citySelector2 = document.getElementById('citySelector2');
+        var citySelector3 = document.getElementById('citySelector3');
+
+
+        // 动态生成省会城市选项
+        cities.forEach(function(city) {
+            var option = document.createElement('option');
+            var option2 = document.createElement('option');
+            var option3 = document.createElement('option');
+
+            option.value = city;
+            option.textContent = city;
+            option2.value = city;
+            option2.textContent = city;
+            option3.value = city;
+            option3.textContent = city;
+            citySelector.appendChild(option);
+            citySelector2.appendChild(option2);
+            citySelector3.appendChild(option3);
+
+        });
+    </script>
+ 
+</body>
+</html>
