@@ -5,9 +5,9 @@
 
 This project is organized into the following directories:
 
-- `week01`: 数据导论第一周作业.
-- `week02`: 数据导论第二周作业.
-- `week03`: 数据导论第三周作业.
+- `[week01](./week01)`: 数据导论第一周作业.
+- `[week02](./week02)`: 数据导论第二周作业.
+- `[week03](./week03)`: 数据导论第三周作业.
 - ...
 - `week13`: 数据导论第四周作业.
 - `final` : 数据导论课程期末大项目
